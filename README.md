@@ -9,7 +9,7 @@
 
 ## Quickstart
 
-Build and run then run the console application with PowerShell using the following command from the applcation directory. 
+Build the console application, and then run it with PowerShell using the following command from the applcation directory. 
 
 ``` sh
 .\ReleaseNoteGenerator.exe opentap 9.18
