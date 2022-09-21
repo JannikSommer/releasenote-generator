@@ -17,7 +17,7 @@ Build the console application, and then run it with PowerShell using the followi
 .\ReleaseNoteGenerator.exe opentap 9.18
 ```
 
-A markdown file is not generated in the application directory with the name `ReleaseNotes_opentap-9.18.md`
+A markdown file is then generated in the application directory with the name `ReleaseNotes_opentap-9.18.md`
 
 
 ## GitHub permissions 
