@@ -1,5 +1,7 @@
 # Releasenote generator
- Releasenote generator for [OpenTAP docs](https://doc.opentap.io/), which pulls information from GitHub and generating a MarkDown file with structured data. 
+ Release note generator for [OpenTAP docs](https://doc.opentap.io/), which pulls information from GitHub and generating a MarkDown file with structured data. 
+ 
+Release notes are generated from a repository and a specific milestone, which then lists all the issues closed for that milestone sorted into sections based on issue labels.
 
 ## Table of contents
 
@@ -40,7 +42,7 @@ Use the following options to tweek the application.
 | Command           | Alias | Description                                                   | Default              | 
 |-------------------|-------|-------------------------------------------------------------- |----------------------|
 |  --token          | -t    | Specify a Personal Access Token (see [github-permissions](#github-permissions)).   | `null`               | 
-|  --output         | -o    | Specify a path for the generated markdown file to be placed.  | Application directory|
+|  --output         | -o    | Specify a path for the generated markdown file to be placed.  | Application dir|
 |  --organization   | N/A   | Specify an alternative owner (organization, user, etc.).      | `"opentap"`          |
 |  --version        | N/A   | Shows version information                                     | N/A                  |
 
