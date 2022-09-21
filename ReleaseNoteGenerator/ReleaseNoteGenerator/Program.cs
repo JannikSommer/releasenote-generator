@@ -12,7 +12,7 @@ outputPathOption.AddAlias("-o");
 var organizationOption = new Option<string>("--organization", getDefaultValue: () => "opentap", "Alternative owner of repositories.");
 
 
-var rootCommand = new RootCommand("Realease note generator for OpenTAP.io docs.");
+var rootCommand = new RootCommand("Release note generator for OpenTAP.io docs.");
 rootCommand.AddArgument(repositoryArgument);
 rootCommand.AddArgument(milestoneArgument);
 rootCommand.AddOption(tokenOption);
