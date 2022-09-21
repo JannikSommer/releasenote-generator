@@ -37,14 +37,14 @@ where `<repository>` is the name of the repository and `<milestone>` is the mile
 
 ### Options 
 
-Use the following options to tweek the application. 
+Use the following options to tweak the application. 
 
 | Command           | Alias | Description                                                   | Default              | 
 |-------------------|-------|-------------------------------------------------------------- |----------------------|
 |  --token          | -t    | Specify a Personal Access Token (see [github-permissions](#github-permissions)).   | `null`               | 
 |  --output         | -o    | Specify a path for the generated markdown file to be placed.  | Application dir|
 |  --organization   | N/A   | Specify an alternative owner (organization, user, etc.).      | `"opentap"`          |
-|  --version        | N/A   | Shows version information                                     | N/A                  |
+|  --version        | N/A   | Shows version information.                                    | N/A                  |
 
 
 
