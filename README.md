@@ -11,10 +11,11 @@ Release notes are generated from a repository and a specific milestone, which th
 
 ## Quickstart
 
-Build the console application, and then run it with PowerShell using the following command from the applcation directory. 
+Build the console application, and then run it using the following command from the applcation directory. 
 
 ``` sh
-.\ReleaseNoteGenerator.exe opentap 9.18
+dotnet build
+dotnet run opentap 9.18
 ```
 
 A markdown file is then generated in the application directory with the name `ReleaseNotes_opentap-9.18.md`
