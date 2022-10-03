@@ -1,8 +1,6 @@
 ﻿using ReleaseNoteGenerator;
 using System.CommandLine;
 using Newtonsoft.Json;
-using Octokit;
-using System.IO;
 
 // Setup arguments and options
 var repositoryArgument = new Argument<string>("repository", "Name of milestone repository.");
@@ -13,7 +11,6 @@ tokenOption.AddAlias("-t");
 var outputPathOption = new Option<string?>("--output", getDefaultValue: () => null, "Full path for output markdown file.");
 outputPathOption.AddAlias("-o");
 var organizationOption = new Option<string>("--organization", getDefaultValue: () => "opentap", "Alternative owner of repositories.");
-
 
 var rootCommand = new RootCommand("Release note generator for OpenTAP.io docs.");
 rootCommand.AddArgument(repositoryArgument);
@@ -30,7 +27,6 @@ rootCommand.SetHandler((repo, milestone, token, outputPath, organization) =>
 
 return await rootCommand.InvokeAsync(args);
 
-
 void Run(string repository, string milestone, string? token, string? outputPath, string organization)
 {
     try
@@ -45,7 +41,6 @@ void Run(string repository, string milestone, string? token, string? outputPath,
     }
 }
 
-
 Configuration LoadConfiguration()
 {
     try
@@ -54,7 +49,7 @@ Configuration LoadConfiguration()
     }
     catch (FileNotFoundException)
     {
-        throw new Exception("Configuration file not found. Did you rename or delete config.json"); 
+        throw new Exception("Configuration file not found. Did you rename or delete ./config.json?"); 
     }
     catch (JsonException e)
     {

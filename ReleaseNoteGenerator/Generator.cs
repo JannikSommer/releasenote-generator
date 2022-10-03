@@ -72,7 +72,7 @@ namespace ReleaseNoteGenerator
                 }
                 else
                 {
-                    throw new Exception("Access token not authorized. Make sure it has the correct permissions.");
+                    throw new Exception("Access token not authorized. Make sure it is correct and has the correct permissions.");
                 }
             }
             catch (Octokit.ApiException e)
@@ -106,7 +106,7 @@ namespace ReleaseNoteGenerator
                 }
                 else
                 {
-                    throw new Exception("Access token not authorized. Make sure it has the correct permissions.");
+                    throw new Exception("Access token not authorized. Make sure it is correct and has the correct permissions.");
                 }
             }
             catch (Octokit.ApiException e)
