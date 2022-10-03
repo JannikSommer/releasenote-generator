@@ -8,6 +8,7 @@ Release notes are generated from a repository and a specific milestone, which th
 1. [Quickstart](#quickstart)
 2. [GitHub permissions](#github-permissions)
 3. [Command line arguments](#command-line-arguments)
+4. [Configuration](#configuration)
 
 ## Quickstart
 
@@ -42,10 +43,32 @@ Use the following options to tweak the application.
 
 | Command           | Alias | Description                                                   | Default              | 
 |-------------------|-------|-------------------------------------------------------------- |----------------------|
-|  --token          | -t    | Specify a Personal Access Token (see [github-permissions](#github-permissions)).   | `null`               | 
-|  --output         | -o    | Specify a path for the generated markdown file to be placed.  | Application dir|
+|  --token          | -t    | Specify a Personal Access Token (see [github-permissions](#github-permissions)).   | `null` | 
+|  --output         | -o    | Specify a path for the generated markdown file to be placed.  | Application dir      |
 |  --organization   | N/A   | Specify an alternative owner (organization, user, etc.).      | `"opentap"`          |
 |  --version        | N/A   | Shows version information.                                    | N/A                  |
 
+
+## Configuration 
+
+Change the values in the `config.json` file to change the behavior of the generator. The program is currently dependant on the following configurations.
+
+### Sections 
+The `Sections` value is used to split labels into different header for the output. The list of sections are used as a priority list such that the issues are written in the order of labels. Furthermore, issues are only written in one section following the priority from the Sections (an issues with labels "feature" and "usability" will only be written under "New Features" header). You can use the `Header` value to change header in the output. 
+
+**The `Label` value is NOT case sensitive!**
+
+``` json
+{
+  "Sections": [
+    {"Label": "feature", "Header": "New Features"},
+    {"Label": "bug", "Header": "Bug Fixes"},
+    {"Label": "usability", "Header": "Usability Improvements"},
+    {"Label": "documentation", "Header": "Documentation"}
+  ]
+}
+```
+
+The exmaple json above will have the priority feature > bug > usabiltiy > documentation > other. **The other section will always be generated from the issues which could not be mapped to any of the labels specified**. 
 
 

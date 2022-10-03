@@ -1,4 +1,5 @@
 ﻿using Octokit;
+using System.Reflection.Emit;
 
 namespace ReleaseNoteGenerator
 {
@@ -6,8 +7,9 @@ namespace ReleaseNoteGenerator
     {
         private const string APP_NAME = "ReleaseNoteGenerator";
 
-        public Generator(string repo, string milestone, string? token, string? outputPath, string organization)
+        public Generator(Configuration config, string repo, string milestone, string? token, string? outputPath, string organization)
         {
+            Configuration = config;
             _repository = repo;
             _milestone = milestone;
             _client = new GitHubClient(new ProductHeaderValue(APP_NAME));
@@ -20,6 +22,8 @@ namespace ReleaseNoteGenerator
 
             _organization = organization;
         }
+
+        public Configuration Configuration { get; private set; }
 
         private GitHubClient _client;
         private string _repository;
@@ -41,7 +45,7 @@ namespace ReleaseNoteGenerator
             var issues = GetAllIssuesForRepository(milestoneNumber);
 
             // Generate file
-            GenerateMarkdownFile(issues);
+            GenerateMarkdownFile(issues.ToList());
         }
 
         private IReadOnlyList<Milestone> GetAllMilestonesForRepository()
@@ -111,55 +115,42 @@ namespace ReleaseNoteGenerator
             }
         }
 
-        private void GenerateMarkdownFile(IReadOnlyList<Issue> issues)
+        private void GenerateMarkdownFile(List<Issue> issues)
         {
-            
+            // Remove all with "regression" label
+            issues.RemoveAll(i => i.Labels.Any(l => l.Name.ToLower().Contains("regression")));
+
             string path = CreateOutputPath();
             using (TextWriter tw = new StreamWriter(path))
             {
                 tw.WriteLine($"Release Notes - {_repository} {_milestone} \n ============= \n");
 
-                // New Features section
-                tw.WriteLine($"New Features \n ------- \n");
-                WriteSection(tw, issues, "feature");
+                foreach (Section section in Configuration.Sections)
+                {
+                    tw.WriteLine($"{section.Header} \n ------- \n");
+                    WriteSection(tw, issues, section.Label.ToLower());
+                }
 
-                // Usability Improvements section
-                tw.WriteLine($"Usability Improvements \n ------- \n");
-                WriteSection(tw, issues, "usability");
-
-                // Bug Fixes section
-                tw.WriteLine($"Bug Fixes \n ------- \n");
-                WriteSection(tw, issues, "bug");
-
-                // Documentation section
-                tw.WriteLine($"Documentation \n ------- \n");
-                WriteSection(tw, issues, "documentation");
-
-                // Other section
+                // Write what is left as other
                 tw.WriteLine($"Other \n ------- \n");
-                foreach (var issue in issues
-                    .Where(i => i.Labels.All(l => !l.Name.ToLower().Contains("feature") 
-                                               && !l.Name.ToLower().Contains("usability")
-                                               && !l.Name.ToLower().Contains("bug")
-                                               && !l.Name.ToLower().Contains("documentation")))
-                    .OrderBy(i => i.Id))
+                foreach (var issue in issues)
                 {
                     tw.WriteLine(IssueAsMarkdownItem(issue));
                 }
-
-                Console.WriteLine($"Release notes for {_repository} {_milestone} saved to {path}");
             }
+            Console.WriteLine($"Release notes for {_repository} {_milestone} saved to {path}");
         }
 
-        private void WriteSection(TextWriter tw, IReadOnlyList<Issue> issues, string label)
+        private void WriteSection(TextWriter tw, List<Issue> issues, string label)
         {
-            foreach (var issue in issues
-                .Where(i => i.Labels.Any(l => l.Name.ToLower().Contains(label) 
-                                          && !l.Name.ToLower().Contains("regression")))
-                .OrderBy(i => i.Id))
-            {
-                tw.WriteLine(IssueAsMarkdownItem(issue));
-            }
+            // Get the issues relevant for the section
+            var sectionIssues = issues.Where(i => i.Labels.Any(l => l.Name.ToLower().Contains(label))).ToList();
+
+            // Remove issues from combined list
+            issues.RemoveAll(i => sectionIssues.Any(si => si.Id == i.Id));
+
+            sectionIssues.ForEach(issue => tw.WriteLine(IssueAsMarkdownItem(issue)));
+
             tw.WriteLine("\n");
         }
 

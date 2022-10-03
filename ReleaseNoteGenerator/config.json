@@ -1,0 +1,20 @@
+﻿{
+  "Sections": [
+    {
+      "Label": "feature",
+      "Header": "New Features"
+    },
+    {
+      "Label": "bug",
+      "Header": "Bug Fixes"
+    },
+    {
+      "Label": "usability",
+      "Header": "Usability Improvements"
+    },
+    {
+      "Label": "documentation",
+      "Header": "Documentation"
+    }
+  ]
+}

@@ -1,5 +1,8 @@
 ﻿using ReleaseNoteGenerator;
 using System.CommandLine;
+using Newtonsoft.Json;
+using Octokit;
+using System.IO;
 
 // Setup arguments and options
 var repositoryArgument = new Argument<string>("repository", "Name of milestone repository.");
@@ -30,15 +33,32 @@ return await rootCommand.InvokeAsync(args);
 
 void Run(string repository, string milestone, string? token, string? outputPath, string organization)
 {
-    Generator generator = new Generator(repository, milestone, token, outputPath, organization);
     try
     {
+        Generator generator = new Generator(LoadConfiguration(), repository, milestone, token, outputPath, organization);
         generator.Generate();
     }
     catch (Exception e)
     {
         Console.WriteLine(e);
         return;
+    }
+}
+
+
+Configuration LoadConfiguration()
+{
+    try
+    {
+        return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText("config.json"))!;
+    }
+    catch (FileNotFoundException)
+    {
+        throw new Exception("Configuration file not found. Did you rename or delete config.json"); 
+    }
+    catch (JsonException e)
+    {
+        throw e;
     }
 }
 
